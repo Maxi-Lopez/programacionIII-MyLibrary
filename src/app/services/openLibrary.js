@@ -20,7 +20,7 @@ export async function searchBooks(query = "harry potter") {
 export async function getBookDetails(id) {
   try {
     const response = await fetch(
-      `https://openlibrary.org/${id}.json`
+      `https://openlibrary.org/works/${id}.json`
     );
 
     if (!response.ok) return null;

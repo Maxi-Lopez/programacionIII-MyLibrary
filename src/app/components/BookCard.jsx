@@ -1,52 +1,48 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-
-const normalizeKey = (key) => {
-  if (!key) return "";
-  if (key.startsWith("/works/")) return key;
-  if (key.startsWith("OL")) return `/works/${key}`;
-  return key;
-};
+import Link from "next/link";
 
 export default function BookCard({ book }) {
-  console.log("Estoy aca en la function de BookCard")
-  const router = useRouter();
-
+  const idBusqueda = book.key.split("/").pop();
   const coverId = book.cover_i;
-  const id = normalizeKey(book.key);
-  const handleClick = () => {
-    router.push(`/libros${id}`);
-  };
 
   return (
-    <div
-      onClick={handleClick}
-      style={{
-        display: "flex",
-        gap: "12px",
-        padding: "10px",
-        border: "1px solid #eee",
-        borderRadius: "10px",
-        alignItems: "center",
-        backgroundColor: "white",
-        cursor: "pointer",
-      }}
-    >
+    <div className="border p-3 rounded-lg shadow hover:shadow-lg transition max-w-sm flex flex-col h-full">
+
+      {/* Imagen */}
       {coverId ? (
         <img
-          src={`https://covers.openlibrary.org/b/id/${coverId}-S.jpg`}
+          src={`https://covers.openlibrary.org/b/id/${coverId}-M.jpg`}
           alt={book.title}
-          style={{ width: "60px", height: "90px", objectFit: "cover" }}
+          className="w-full h-40 object-cover rounded mb-3"
         />
       ) : (
-        <div style={{ width: "60px", height: "90px", background: "#eee" }} />
+        <div className="w-full h-40 flex items-center justify-center bg-gray-100 rounded mb-3">
+          Sin portada
+        </div>
       )}
 
-      <div style={{ flex: 1 }}>
-        <h4>{book.title}</h4>
-        <p>{book.author_name?.join(", ")}</p>
+      <div className="flex-1">
+        <h2 className="text-xl font-semibold mb-2">
+          {book.title}
+        </h2>
+
+        <p className="text-gray-600">
+          Autor: {book.author_name?.[0] || "Desconocido"}
+        </p>
+
+        <p className="text-gray-600 mb-4">
+          Año: {book.first_publish_year || "N/D"}
+        </p>
       </div>
+
+      <div className="mt-auto pt-2 border-t">
+        <Link
+          href={`/libros/${idBusqueda}`}
+          className="text-blue-600 hover:underline"
+        >
+          Ver detalles
+        </Link>
+      </div>
+
     </div>
   );
 }

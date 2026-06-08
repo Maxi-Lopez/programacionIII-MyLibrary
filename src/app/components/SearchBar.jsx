@@ -11,12 +11,8 @@ export default function SearchBar({ setResults }) {
     if (!query.trim()) return;
 
     setLoading(true);
-
     const results = await searchBooks(query);
-    console.log("API RESULTS:", results);
-
     setResults(results);
-
     setLoading(false);
   };
 
@@ -56,7 +52,7 @@ export default function SearchBar({ setResults }) {
           disabled={loading}
           style={{
             padding: "12px 18px",
-            backgroundColor: "#22c55e",
+            backgroundColor: "#22c55e", // verde
             color: "white",
             border: "none",
             cursor: "pointer",

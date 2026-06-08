@@ -15,17 +15,30 @@ export function FavoritesProvider({ children }) {
     if (storedFavorites) {
       setFavorites(JSON.parse(storedFavorites));
     } else {
-      setFavorites([]);
       localStorage.setItem("favorites", JSON.stringify([]));
     }
   }, []);
 
+  const normalizeBook = (book) => {
+    return {
+      key: book.key,
+      title: book.title,
+
+      coverId: book.cover_i || book.covers?.[0] || book.coverId || null,
+
+      author: book.author_name?.[0] || book.author || "Desconocido",
+      year: book.first_publish_year || book.year || "N/D",
+    };
+  };
+
   const addFavorite = (book) => {
     setFavorites((prev) => {
-      const exists = prev.some((fav) => fav.key === book.key);
+      const normalized = normalizeBook(book);
+
+      const exists = prev.some((fav) => fav.key === normalized.key);
       if (exists) return prev;
 
-      const updated = [...prev, book];
+      const updated = [...prev, normalized];
       localStorage.setItem("favorites", JSON.stringify(updated));
       return updated;
     });

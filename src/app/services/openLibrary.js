@@ -1,16 +1,14 @@
-export async function searchBooks(query = "harry potter") {
+import axios from 'axios';
+
+export async function searchBooks(query) {
+  if (!query) return [];
+  
   try {
-    const response = await fetch(
+    const response = await axios.get(
       `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`
     );
 
-    if (!response.ok) {
-      throw new Error("Error al obtener libros");
-    }
-
-    const data = await response.json();
-
-    return data.docs;
+    return response.data.docs;
   } catch (error) {
     console.error(error);
     return [];
@@ -19,13 +17,11 @@ export async function searchBooks(query = "harry potter") {
 
 export async function getBookDetails(id) {
   try {
-    const response = await fetch(
+    const response = await axios.get(
       `https://openlibrary.org/works/${id}.json`
     );
 
-    if (!response.ok) return null;
-
-    return await response.json();
+    return response.data;
   } catch (error) {
     console.error(error);
     return null;
